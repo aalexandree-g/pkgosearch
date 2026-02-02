@@ -14,6 +14,7 @@ const Home = () => {
   return (
     <div className="app">
       <Header />
+      <div className="alternative-version">ALTERNATIVE VERSION</div>
       <form className="home__form" onSubmit={homeLogic.handleSubmit}>
         <RulesAccordion
           isOpen={homeLogic.isRulesOpen}

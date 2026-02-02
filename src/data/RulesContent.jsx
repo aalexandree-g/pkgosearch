@@ -19,7 +19,10 @@ export const rulesContent = {
           <code>!Hisui</code>, and <code>!Paldea</code> cannot be unexcluded.
           <br />
           (e.g. <code>(rattata&alola),(meowth&!alola)</code> won't show any
-          Rattata)
+          Rattata
+          <br />
+          and <code>(rattata&kanto),(meowth&!kanto)</code> won't show any
+          Meowth)
         </>
       ),
     },
