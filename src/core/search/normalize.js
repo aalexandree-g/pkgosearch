@@ -1,5 +1,3 @@
-import { flattenByType, dedupeTermNodes, combineLeft } from './astUtils'
-
 /**
  * Converts an expression tree to CNF (Conjunctive Normal Form),
  * by distributing OR over AND.
@@ -52,60 +50,32 @@ export function toCNF(node) {
  * - !(A & B) -> (!A) | (!B)
  * - !(A | B) -> (!A) & (!B)
  */
-export function toNNF(node) {
-  return pushNot(node, false)
+function normalizeNegations(node) {
+  return rewriteNegations(node, false)
 }
 
-function pushNot(node, negated) {
+function rewriteNegations(node, negated) {
   if (!node) return node
 
-  // TERM
   if (node.type === 'TERM') {
     return negated ? { type: 'NOT', child: node } : node
   }
 
-  // double negation / toggle
   if (node.type === 'NOT') {
-    return pushNot(node.child, !negated)
+    return rewriteNegations(node.child, !negated)
   }
 
-  // AND/OR when negated
   if (node.type === 'AND' || node.type === 'OR') {
     const op = negated ? (node.type === 'AND' ? 'OR' : 'AND') : node.type
 
     return {
       type: op,
-      left: pushNot(node.left, negated),
-      right: pushNot(node.right, negated),
+      left: rewriteNegations(node.left, negated),
+      right: rewriteNegations(node.right, negated),
     }
   }
 
   return node
-}
-
-/**
- * Removes duplicate TERM nodes inside AND / OR chains.
- *
- * Examples:
- * - pikachu,pikachu -> pikachu
- * - pikachu,3*,pikachu -> pikachu,3*
- * - 3*&pikachu&pikachu -> 3*&pikachu
- */
-export function dedupeAst(node) {
-  if (!node || node.type === 'TERM' || node.type === 'NOT') return node
-
-  const left = dedupeAst(node.left)
-  const right = dedupeAst(node.right)
-
-  if (node.type === 'AND' || node.type === 'OR') {
-    // flatten the chain, remove duplicates, then rebuild the tree
-    const flat = flattenByType({ type: node.type, left, right }, node.type)
-    const deduped = dedupeTermNodes(flat)
-
-    return combineLeft(deduped, node.type)
-  }
-
-  return { ...node, left, right }
 }
 
 // Reject negated IV filters
@@ -137,10 +107,11 @@ function assertNoForbiddenIVTerms(node) {
  * Current pipeline: CNF -> dedupe
  */
 export function normalize(node) {
-  const nnf = toNNF(node)
+  const nnf = normalizeNegations(node)
 
   // throws if forbidden terms are found
   assertNoForbiddenIVTerms(nnf)
 
-  return dedupeAst(toCNF(nnf))
+  //return dedupeAst(toCNF(nnf))
+  return toCNF(nnf)
 }

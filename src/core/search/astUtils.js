@@ -34,19 +34,3 @@ export function flattenByType(node, type, acc = []) {
 
   return acc
 }
-
-/**
- * Removes duplicate TERM nodes (by value), keeping the first occurrence.
- * Non-TERM nodes are always kept.
- */
-export function dedupeTermNodes(nodes) {
-  const seen = new Set()
-
-  return nodes.filter((node) => {
-    if (node.type !== 'TERM') return true
-
-    if (seen.has(node.value)) return false
-    seen.add(node.value)
-    return true
-  })
-}
