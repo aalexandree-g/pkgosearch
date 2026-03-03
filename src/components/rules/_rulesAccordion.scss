@@ -6,22 +6,11 @@
   &__header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
   }
 
   &__title {
     font-size: 1.138rem;
     margin: 0;
-  }
-
-  &__icon {
-    color: var(--text-muted);
-    transition: transform 0.2s ease;
-
-    &--open {
-      transform: rotate(-180deg);
-    }
   }
 
   &__content {

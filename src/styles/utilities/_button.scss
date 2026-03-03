@@ -38,7 +38,7 @@
 .dark {
   .btn {
     background: linear-gradient(180deg, var(--bg) 50%, var(--bg-dark) 100%);
-    border: 1px solid var(--bg);
+    border: 1px solid var(--bg-light);
     border-top: 1px solid var(--bg-light);
 
     &:hover,

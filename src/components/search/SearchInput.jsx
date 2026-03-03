@@ -13,7 +13,9 @@ const SearchInput = ({
   return (
     <div className="search-input">
       <div className="result-box__toolbar">
-        <span className="result-box__title">You can use parentheses !</span>
+        <span className="result-box__title">
+          You can use negation ( ! ) and parentheses.
+        </span>
       </div>
       <textarea
         ref={refEl}

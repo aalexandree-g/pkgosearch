@@ -1,5 +1,3 @@
-import { Copy } from 'lucide-react'
-
 const ResultBox = ({ show, hasSubmitted, result, error }) => {
   if (!show) return null
 
@@ -35,22 +33,6 @@ const ResultBox = ({ show, hasSubmitted, result, error }) => {
           >
             {isError ? 'Invalid syntax' : 'Advanced search for Pokémon GO'}
           </span>
-
-          {!isError && result && (
-            <button
-              type="button"
-              className="result-box__copy"
-              onClick={handleCopy}
-              aria-label="Copy result"
-              title="Copy"
-              disabled={!text}
-            >
-              <div className="result-box__copy-label">
-                {' '}
-                <span>Copy to clipboard</span> <Copy size={14} />{' '}
-              </div>
-            </button>
-          )}
         </div>
 
         {text ? (
@@ -61,6 +43,16 @@ const ResultBox = ({ show, hasSubmitted, result, error }) => {
           </span>
         )}
       </div>
+
+      {!isError && result && (
+        <button
+          type="button"
+          className="u-surface btn btn--submit"
+          onClick={handleCopy}
+        >
+          Copy to clipboard
+        </button>
+      )}
     </div>
   )
 }

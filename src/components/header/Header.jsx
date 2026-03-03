@@ -4,10 +4,14 @@ import { useState, useEffect } from 'react'
 import Logo from '../ui/logo/Logo'
 
 const Header = () => {
-  const [isDark, setIsDark] = useState(false)
+  const [isDark, setIsDark] = useState(() => localStorage.getItem('theme') === 'dark')
 
   const toggleTheme = () => {
-    setIsDark((prev) => !prev)
+    setIsDark((prev) => {
+      const next = !prev
+      localStorage.setItem('theme', next ? 'dark' : 'light')
+      return next
+    })
   }
 
   useEffect(() => {

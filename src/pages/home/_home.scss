@@ -1,8 +1,12 @@
+@use '../../styles/variables.scss';
+
 .home {
-  &__form {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    margin: 0 7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 0 7rem;
+
+  a {
+    color: var(--secondary);
   }
 }

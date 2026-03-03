@@ -1,6 +1,5 @@
+import { Link } from 'react-router-dom'
 import Header from '../../components/header/Header'
-import { rulesContent } from '../../data/RulesContent'
-import RulesAccordion from '../../components/rules/RulesAccordion'
 import SearchInput from '../../components/search/SearchInput'
 import ResultBox from '../../components/result/ResultBox'
 
@@ -14,13 +13,12 @@ const Home = () => {
   return (
     <div className="app">
       <Header />
-      <form className="home__form" onSubmit={homeLogic.handleSubmit}>
-        <RulesAccordion
-          isOpen={homeLogic.isRulesOpen}
-          onToggle={homeLogic.toggleRules}
-          title={rulesContent.title}
-          rules={rulesContent.items}
-        />
+      <form className="home" onSubmit={homeLogic.handleSubmit}>
+        <div className="u-surface rules">
+          <p>
+            Click <Link to="/things-to-know">here</Link> for things to know.
+          </p>
+        </div>
         <SearchInput
           refEl={ref}
           hasSubmitted={homeLogic.hasSubmitted}

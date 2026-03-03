@@ -7,9 +7,6 @@ export function useHomeLogic({ onResize } = {}) {
   const [error, setError] = useState(null)
   const [hasSubmitted, setHasSubmitted] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
-  const [isRulesOpen, setIsRulesOpen] = useState(false)
-
-  const toggleRules = () => setIsRulesOpen((prev) => !prev)
 
   const handleFocus = () => setIsFocused(true)
   const handleBlur = () => setIsFocused(false)
@@ -62,8 +59,6 @@ export function useHomeLogic({ onResize } = {}) {
     error,
     hasSubmitted,
     isFocused,
-    isRulesOpen,
-    toggleRules,
     handleFocus,
     handleBlur,
     handleChange,

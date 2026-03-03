@@ -7,7 +7,7 @@ export function termNode(token) {
 
 /**
  * Combines nodes into a left-associative binary tree.
- * Example: [a,b,c] with 'OR' -> OR(OR(a,b),c)
+ * Example: (A,B,C) -> OR(OR(A,B),C)
  */
 export function combineLeft(nodes, opType) {
   if (!nodes.length) throw new Error('No node to combine')
@@ -20,7 +20,7 @@ export function combineLeft(nodes, opType) {
 
 /**
  * Flattens a tree of the same operator into a list of nodes.
- * Example: OR(OR(a,b),c) -> [a,b,c]
+ * Example: OR(OR(A,B),C) -> (A,B,C)
  */
 export function flattenByType(node, type, acc = []) {
   if (!node) return acc

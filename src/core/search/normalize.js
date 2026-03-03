@@ -112,6 +112,5 @@ export function normalize(node) {
   // throws if forbidden terms are found
   assertNoForbiddenIVTerms(nnf)
 
-  //return dedupeAst(toCNF(nnf))
   return toCNF(nnf)
 }
