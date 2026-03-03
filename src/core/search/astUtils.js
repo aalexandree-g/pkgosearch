@@ -19,6 +19,31 @@ export function combineLeft(nodes, opType) {
 }
 
 /**
+ * Computes a canonical, order-independent string key for a node.
+ * Children of AND/OR are sorted alphabetically so that (A&B) and (B&A) yield the same key.
+ * Compound sub-expressions are wrapped in parentheses to avoid ambiguous keys.
+ */
+export function canonicalKey(node) {
+  if (!node) return ''
+  if (node.type === 'TERM') return node.value
+  if (node.type === 'NOT') return `!(${canonicalKey(node.child)})`
+
+  if (node.type === 'AND' || node.type === 'OR') {
+    const op = node.type === 'AND' ? '&' : ','
+    const flat = flattenByType(node, node.type)
+    const keys = flat
+      .map((n) => {
+        const k = canonicalKey(n)
+        return n.type === 'AND' || n.type === 'OR' ? `(${k})` : k
+      })
+      .sort()
+    return keys.join(op)
+  }
+
+  return ''
+}
+
+/**
  * Flattens a tree of the same operator into a list of nodes.
  * Example: OR(OR(A,B),C) -> (A,B,C)
  */

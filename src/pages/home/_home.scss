@@ -10,3 +10,18 @@
     color: var(--secondary);
   }
 }
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .home {
+    margin: 0 3rem;
+    gap: 1.5rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .home {
+    margin: 0 0.5rem;
+  }
+}

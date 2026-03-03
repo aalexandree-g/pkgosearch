@@ -1,28 +1,4 @@
-import { flattenByType, combineLeft } from '../astUtils'
-
-/**
- * Computes a canonical, order-independent string key for a node.
- * Children of AND/OR are sorted alphabetically, so (A&B) and (B&A) yield the same key.
- */
-function canonicalKey(node) {
-  if (!node) return ''
-  if (node.type === 'TERM') return node.value
-  if (node.type === 'NOT') return `!(${canonicalKey(node.child)})`
-
-  if (node.type === 'AND' || node.type === 'OR') {
-    const op = node.type === 'AND' ? '&' : ','
-    const flat = flattenByType(node, node.type)
-    const keys = flat
-      .map((n) => {
-        const k = canonicalKey(n)
-        return n.type === 'AND' || n.type === 'OR' ? `(${k})` : k
-      })
-      .sort()
-    return keys.join(op)
-  }
-
-  return ''
-}
+import { flattenByType, combineLeft, canonicalKey } from '../astUtils'
 
 /**
  * Removes nodes with duplicate canonical keys from a flat list (stable: keeps first).

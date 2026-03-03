@@ -59,3 +59,10 @@
     }
   }
 }
+
+/* Tablet & mobile */
+@media (max-width: 1024px) {
+  .result-box {
+    gap: 0.5rem;
+  }
+}

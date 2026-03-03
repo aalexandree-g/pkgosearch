@@ -22,3 +22,10 @@
     gap: 1rem;
   }
 }
+
+/* Tablet & mobile */
+@media (max-width: 1024px) {
+  .search-input {
+    gap: 0.5rem;
+  }
+}
