@@ -1,13 +1,7 @@
-import { tokenize } from '../tokenize'
-import { parseAndWithOrPriority } from '../parse'
-import { normalize } from '../normalize'
-import { astToPokemon } from '../serialize'
+import { transform } from '../index.js'
 
 function compileToPokemon(input) {
-  const tokens = tokenize(input)
-  const ast = parseAndWithOrPriority(tokens)
-  const normalized = normalize(ast)
-  return astToPokemon(normalized)
+  return transform(input)
 }
 
 describe('pipeline (tokenize → parse → normalize → serialize)', () => {
@@ -38,7 +32,7 @@ describe('pipeline (tokenize → parse → normalize → serialize)', () => {
   })
 
   test('removes duplicate terms after CNF', () => {
-    expect(compileToPokemon('a,(a&b)')).toBe('a&a,b')
+    expect(compileToPokemon('a,(a&b)')).toBe('a')
   })
 
   test('handles extra outer parentheses', () => {
