@@ -45,6 +45,15 @@ describe('pipeline (tokenize → parse → normalize → serialize)', () => {
     expect(compileToPokemon('(((a)))')).toBe('a')
   })
 
+  test('handles js AND (a&&b)', () => {
+    expect(compileToPokemon('a&&b')).toBe('a&b')
+  })
+
+  test('handles js OR (a||b)', () => {
+    expect(compileToPokemon('a||b')).toBe('a,b')
+    expect(compileToPokemon('a|b')).toBe('a,b')
+  })
+
   // ---------- NOT OPERATOR ----------
 
   test('converts !a correctly', () => {
@@ -98,10 +107,6 @@ describe('pipeline (tokenize → parse → normalize → serialize)', () => {
   })
 
   // ---------- INVALID SYNTAX ----------
-
-  test('throws on duplicated AND (a&&b)', () => {
-    expect(() => compileToPokemon('a&&b')).toThrow()
-  })
 
   test('throws on duplicated OR (a,,b)', () => {
     expect(() => compileToPokemon('a,,b')).toThrow()

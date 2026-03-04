@@ -132,10 +132,31 @@ describe('parseAndWithOrPriority', () => {
     )
   })
 
-  test('throws on duplicated AND (a&&b)', () => {
-    expect(() => parseAndWithOrPriority(tokenize('a&&b'))).toThrow(
-      `Incomplete expression around '&'`
-    )
+
+  test('parses a&&b as AND(a, b)', () => {
+    const ast = parseAndWithOrPriority(tokenize('a&&b'))
+    expect(ast).toEqual({
+      type: 'AND',
+      left: { type: 'TERM', value: 'a' },
+      right: { type: 'TERM', value: 'b' },
+    })
+  })
+  test('parses a||b as OR(a, b)', () => {
+    const ast = parseAndWithOrPriority(tokenize('a||b'.replace(/\|\|/g, ',')))
+    expect(ast).toEqual({
+      type: 'OR',
+      left: { type: 'TERM', value: 'a' },
+      right: { type: 'TERM', value: 'b' },
+    })
+  })
+
+  test('parses a|b as OR(a, b)', () => {
+    const ast = parseAndWithOrPriority(tokenize('a|b'.replace(/\|/g, ',')))
+    expect(ast).toEqual({
+      type: 'OR',
+      left: { type: 'TERM', value: 'a' },
+      right: { type: 'TERM', value: 'b' },
+    })
   })
 
   test('throws on duplicated OR (a,,b)', () => {
