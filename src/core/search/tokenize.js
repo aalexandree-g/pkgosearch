@@ -1,5 +1,6 @@
 const TOKEN_MAP = {
   '&': 'AND',
+  '|': 'OR',
   ',': 'OR',
   ':': 'OR',
   ';': 'OR',
@@ -9,8 +10,12 @@ const TOKEN_MAP = {
 }
 
 export function tokenize(input = '') {
+  // deduplicate js-like consecutive operators (&&, ||)
+  input = input.replace(/&+/g, '&');
+  input = input.replace(/\|+/g, '|');
   const tokens = []
   let current = ''
+  let i = 0
 
   // put a 'TERM' into 'tokens'
   const flush = () => {
