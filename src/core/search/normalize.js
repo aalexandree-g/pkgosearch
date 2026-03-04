@@ -106,7 +106,16 @@ function assertNoForbiddenIVTerms(node) {
  * Normalizes an AST using a list of passes.
  * Current pipeline: CNF -> dedupe
  */
-export function normalize(node) {
+  export function toNNF(node) {
+    return normalizeNegations(node)
+  }
+
+  import { removeDuplicateClauses } from './simplify/removeDuplicateClauses.js'
+  export function dedupeAst(node) {
+    return removeDuplicateClauses(node)
+  }
+
+  export function normalize(node) {
   const nnf = normalizeNegations(node)
 
   // throws if forbidden terms are found
