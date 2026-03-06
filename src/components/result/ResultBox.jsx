@@ -31,7 +31,9 @@ const ResultBox = ({ show, hasSubmitted, result, error }) => {
               .filter(Boolean)
               .join(' ')}
           >
-            {isError ? 'Invalid syntax' : 'Advanced search for Pokémon GO'}
+            {isError
+              ? 'Invalid syntax'
+              : `Advanced search for Pokémon GO (${result.length} characters)`}
           </span>
         </div>
 

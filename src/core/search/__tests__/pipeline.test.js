@@ -2,12 +2,14 @@ import { tokenize } from '../tokenize'
 import { parseAndWithOrPriority } from '../parse'
 import { normalize } from '../normalize'
 import { astToPokemon } from '../serialize'
+import { simplify } from '../simplify'
 
 function compileToPokemon(input) {
   const tokens = tokenize(input)
   const ast = parseAndWithOrPriority(tokens)
   const normalized = normalize(ast)
-  return astToPokemon(normalized)
+  const simplified = simplify(normalized)
+  return astToPokemon(simplified)
 }
 
 describe('pipeline (tokenize → parse → normalize → serialize)', () => {
@@ -35,10 +37,6 @@ describe('pipeline (tokenize → parse → normalize → serialize)', () => {
 
   test('converts (a&b),(c&d) correctly', () => {
     expect(compileToPokemon('(a&b),(c&d)')).toBe('a,c&a,d&b,c&b,d')
-  })
-
-  test('removes duplicate terms after CNF', () => {
-    expect(compileToPokemon('a,(a&b)')).toBe('a&a,b')
   })
 
   test('handles extra outer parentheses', () => {

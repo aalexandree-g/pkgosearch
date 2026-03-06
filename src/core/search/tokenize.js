@@ -3,6 +3,7 @@ const TOKEN_MAP = {
   ',': 'OR',
   ':': 'OR',
   ';': 'OR',
+  '|': 'OR',
   '!': 'NOT',
   '(': 'LPAREN',
   ')': 'RPAREN',

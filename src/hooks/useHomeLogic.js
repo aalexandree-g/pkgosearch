@@ -39,7 +39,7 @@ export function useHomeLogic({ onResize } = {}) {
 
       if (output.length > MAX_LENGTH) {
         throw new Error(
-          `Résultat trop long (${output.length} caractères). Limite : ${MAX_LENGTH}.`
+          `Result too long (${output.length} characters). Limit : ${MAX_LENGTH}.`
         )
       }
     } catch (err) {
