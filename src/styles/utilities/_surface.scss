@@ -12,4 +12,23 @@
   &:focus-visible {
     box-shadow: 0 2px 8px var(--shadow);
   }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  &__button {
+    background: none;
+    border: none;
+    color: inherit;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  &__content {
+    margin: 1rem 1.5rem 0.5rem;
+  }
 }
