@@ -23,22 +23,21 @@ const Home = () => {
             className="u-surface__header"
             onClick={() => setOpenUpdate(!openUpdate)}
           >
-            <div className="u-surface__title">Update - March 6th, 2026</div>
+            <div className="u-surface__title">Update - March 11th, 2026</div>
             <button className="u-surface__button" type="button">
               {openUpdate ? <ChevronUp /> : <ChevronDown />}
             </button>
           </div>
           {openUpdate && (
             <div className="u-surface__content">
-              <li>added a description of the tool</li>
-              <li>added a character counter for the result</li>
+              <li>rebranded to pkgosearch</li>
             </div>
           )}
         </div>
         <div className="u-surface rules">
           <div className="u-surface__header" onClick={() => setOpen(!open)}>
             <div className="u-surface__title">
-              <strong>What is PoGO Search Plus ?</strong>
+              <strong>What is pkgosearch ?</strong>
             </div>
             <button className="u-surface__button" type="button">
               {open ? <ChevronUp /> : <ChevronDown />}
@@ -51,7 +50,7 @@ const Home = () => {
               <br />
               <br />
               <Rule title="Group conditions with parentheses">
-                This app lets you build your search{' '}
+                <strong>pkgosearch</strong> lets you build your search{' '}
                 <strong>using parentheses</strong> to group conditions
                 naturally, just like you'd think them. Paste your expression,
                 and the tool instantly converts it into a format the game
@@ -59,15 +58,16 @@ const Home = () => {
               </Rule>
               <br />
               <Rule title="No more duplicate conditions">
-                Beyond conversion, it also cleans up your expressions
-                automatically: duplicate conditions, redundant terms, and
-                unnecessary complexity are removed, so your final search string
-                is always as short and efficient as possible.
+                Beyond conversion, it also{' '}
+                <strong>cleans up your expressions</strong> automatically :
+                duplicate conditions, redundant terms, and unnecessary
+                complexity are removed, so your final search string is always as
+                short and efficient as possible.
               </Rule>
               <br />
               <Rule title="Example">
                 Want all your <strong>shiny Pikachu</strong> and all your{' '}
-                <strong>XXL Pumpkaboo</strong>? Just type
+                <strong>XXL Pumpkaboo</strong> ? Just type
                 <br />
                 <code>(pikachu&shiny),(pumpkaboo&xxl)</code>
                 <br />

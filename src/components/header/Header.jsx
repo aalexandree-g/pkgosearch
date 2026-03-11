@@ -4,7 +4,9 @@ import { useState, useEffect } from 'react'
 import Logo from '../ui/logo/Logo'
 
 const Header = () => {
-  const [isDark, setIsDark] = useState(() => localStorage.getItem('theme') === 'dark')
+  const [isDark, setIsDark] = useState(
+    () => localStorage.getItem('theme') === 'dark'
+  )
 
   const toggleTheme = () => {
     setIsDark((prev) => {
@@ -23,7 +25,9 @@ const Header = () => {
       <div className="main-nav__container">
         <NavLink to="/" className="main-nav__title">
           <Logo className="main-nav__image" />
-          <span className="main-nav__text">PoGO Search Plus</span>
+          <span className="main-nav__text">
+            pkgo<span className="main-nav__text--accent">search</span>
+          </span>
         </NavLink>
 
         <button

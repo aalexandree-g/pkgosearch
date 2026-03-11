@@ -27,10 +27,12 @@
   }
 
   &__text {
-    display: flex;
-    flex-direction: column;
     font-size: 1.383rem;
     font-weight: 600;
+
+    &--accent {
+      color: var(--text-muted);
+    }
   }
 
   &__theme-toggle {

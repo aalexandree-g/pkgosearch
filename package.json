@@ -1,7 +1,8 @@
 {
-  "name": "pogo-search-plus",
+  "name": "pkgo-search",
   "private": true,
   "version": "0.0.0",
+  "description": "Build and simplify Pokémon GO search expressions",
   "type": "module",
   "scripts": {
     "dev": "vite",
