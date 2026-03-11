@@ -30,7 +30,17 @@ const Home = () => {
           </div>
           {openUpdate && (
             <div className="u-surface__content">
-              <li>rebranded to pkgosearch</li>
+              <li>
+                rebranded to pkgosearch (
+                <a
+                  href="https://pkgosearch.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  pkgosearch.com
+                </a>
+                )
+              </li>
             </div>
           )}
         </div>
@@ -44,7 +54,7 @@ const Home = () => {
             </button>
           </div>
           {open && (
-            <p className="u-surface__content">
+            <div className="u-surface__content">
               Pokémon GO's search bar is powerful but writing complex filters
               can quickly become a headache.
               <br />
@@ -84,7 +94,7 @@ const Home = () => {
                 this document
               </a>
               .
-            </p>
+            </div>
           )}
         </div>
         <SearchInput
