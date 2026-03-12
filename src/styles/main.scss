@@ -5,6 +5,7 @@
 @use '../styles/utilities/button';
 
 // components
+@use '../components/footer/footer';
 @use '../components/header/header';
 @use '../components/rules/rule/rule';
 @use '../components/rules/rulesAccordion';
@@ -16,18 +17,27 @@
 
 :root {
   font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1rem;
 }
 
 body {
   background: var(--bg-dark);
-  margin: 0 0 4rem;
+  margin: 0;
   min-width: 320px;
 }
 
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .app {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 2rem;
   max-width: 900px;
+  width: 100%;
   margin: 0 auto;
 }

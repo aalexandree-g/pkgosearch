@@ -1,0 +1,28 @@
+@use '../../styles/variables.scss';
+
+.footer {
+  background-color: var(--bg-light);
+  width: 100%;
+  padding: 1rem 0rem;
+  margin-top: 3rem;
+
+  &__content {
+    margin: 0 auto;
+    font-size: 1rem;
+    text-align: center;
+    color: var(--text-muted);
+  }
+
+  &__link {
+    color: var(--text-muted);
+    font-weight: 600;
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+
+  &__legal {
+    font-size: 0.878rem;
+  }
+}

@@ -42,12 +42,12 @@ const SearchInput = ({
             className="u-surface btn btn--reset"
             onClick={onReset}
           >
-            Reset
+            reset
           </button>
         )}
 
         <button className="u-surface btn btn--submit" type="submit">
-          Convert
+          convert
         </button>
       </div>
     </div>

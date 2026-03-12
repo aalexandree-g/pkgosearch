@@ -4,10 +4,12 @@
   &__title {
     position: relative;
     display: inline-block;
-    font-size: 1.067rem;
+    font-size: 1.138rem;
     margin: 0;
-    padding: 0 3rem 0.3rem 1rem;
-    border-bottom: 0.2rem solid var(--primary-dark);
+    width: 100%;
+    padding: 0 0rem 0.3rem 1rem;
+    border-bottom: 0.3rem solid var(--primary-dark);
+    box-sizing: border-box;
   }
 
   p {
