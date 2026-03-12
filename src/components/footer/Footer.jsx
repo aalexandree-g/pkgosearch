@@ -17,7 +17,7 @@ const Footer = () => {
         </a>
         <br />
         <span className="footer__legal">
-          © 2026 pkgosearch · not affiliated with Niantic or Nintendo
+          © 2026 pkgosearch · Not affiliated with Niantic or Nintendo
         </span>
       </div>
     </footer>

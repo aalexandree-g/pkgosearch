@@ -1,7 +1,6 @@
 @use '../../styles/variables.scss';
 
-// Transferred from rule/_rule.scss
-.rule {
+.text-block {
   &__title {
     position: relative;
     display: inline-block;
@@ -33,7 +32,7 @@
 }
 
 .dark {
-  .rule {
+  .text-block {
     &__title {
       border-color: var(--primary-dark);
     }

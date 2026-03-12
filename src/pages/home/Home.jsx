@@ -1,6 +1,7 @@
 import Header from '../../components/header/Header'
 import Footer from '../../components/footer/Footer'
 import Dropdown from '../../components/dropdown/Dropdown'
+import TextBlock from '../../components/ui/TextBlock'
 import SearchInput from '../../components/search/SearchInput'
 import ResultBox from '../../components/result/ResultBox'
 
@@ -16,7 +17,7 @@ const Home = () => {
       <div className="app">
         <Header />
         <form className="home" onSubmit={homeLogic.handleSubmit}>
-          <Dropdown title="Update - March 11th, 2026">
+          <Dropdown title="Update - March 11th, 2026" small>
             <li>
               rebranded to pkgosearch (
               <a
@@ -34,39 +35,30 @@ const Home = () => {
             quickly become a headache.
             <br />
             <br />
-            <div className="rule">
-              <h2 className="rule__title">Group conditions with parentheses</h2>
-              <p className="rule__text">
-                <strong>pkgosearch</strong> lets you build your search{' '}
-                <strong>using parentheses</strong> to group conditions
-                naturally, just like you'd think them. Paste your expression,
-                and the tool instantly converts it into a format the game
-                actually understands.{' '}
-              </p>
-            </div>
+            <TextBlock title="Group conditions with parentheses">
+              <strong>pkgosearch</strong> lets you build your search{' '}
+              <strong>using parentheses</strong> to group conditions naturally,
+              just like you'd think them. Paste your expression, and the tool
+              instantly converts it into a format the game actually
+              understands.{' '}
+            </TextBlock>
             <br />
-            <div className="rule">
-              <h2 className="rule__title">No more duplicate conditions</h2>
-              <p className="rule__text">
-                Beyond conversion, it also{' '}
-                <strong>cleans up your expressions</strong> automatically :
-                duplicate conditions, redundant terms, and unnecessary
-                complexity are removed, so your final search string is always as
-                short and efficient as possible.
-              </p>
-            </div>
+            <TextBlock title="No more duplicate conditions">
+              Beyond conversion, it also{' '}
+              <strong>cleans up your expressions</strong> automatically :
+              duplicate conditions, redundant terms, and unnecessary complexity
+              are removed, so your final search string is always as short and
+              efficient as possible.
+            </TextBlock>
             <br />
-            <div className="rule">
-              <h2 className="rule__title">Example</h2>
-              <p className="rule__text">
-                Want all your <strong>shiny Pikachu</strong> and all your{' '}
-                <strong>XXL Pumpkaboo</strong> ? Just type
-                <br />
-                <code>(pikachu&shiny),(pumpkaboo&xxl)</code>
-                <br />
-                and let the tool handle the rest.
-              </p>
-            </div>
+            <TextBlock title="Example">
+              Want all your <strong>shiny Pikachu</strong> and all your{' '}
+              <strong>XXL Pumpkaboo</strong> ? Just type
+              <br />
+              <code>(pikachu&shiny),(pumpkaboo&xxl)</code>
+              <br />
+              and let the tool handle the rest.
+            </TextBlock>
             <br />
             <br />
             For a full list of in-game search terms, check out{' '}
