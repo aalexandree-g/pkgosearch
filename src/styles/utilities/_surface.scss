@@ -1,5 +1,5 @@
 .u-surface {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   padding: 0.8rem 1rem;
   color: var(--text);
   background: var(--bg);
@@ -21,7 +21,7 @@
   }
 
   &__title {
-    font-size: 1.138rem;
+    font-size: var(--font-size-lg);
   }
 
   &__button {

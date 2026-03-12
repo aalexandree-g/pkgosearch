@@ -8,9 +8,9 @@
 
   &__content {
     margin: 0 auto;
-    font-size: 1rem;
     text-align: center;
     color: var(--text-muted);
+    font-size: var(--font-size-base);
   }
 
   &__link {
@@ -23,6 +23,6 @@
   }
 
   &__legal {
-    font-size: 0.878rem;
+    font-size: var(--font-size-xs);
   }
 }

@@ -1,10 +1,11 @@
-.rule {
-  padding: 0rem;
+@use '../../styles/variables.scss';
 
+// Transferred from rule/_rule.scss
+.rule {
   &__title {
     position: relative;
     display: inline-block;
-    font-size: 1.138rem;
+    font-size: var(--font-size-lg);
     margin: 0;
     width: 100%;
     padding: 0 0rem 0.3rem 1rem;
@@ -23,7 +24,7 @@
       font-family:
         ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
         'Liberation Mono', 'Courier New', monospace;
-      font-size: 0.9rem;
+      font-size: var(--font-size-sm);
       padding: 0.15rem 0.3rem;
       border-radius: 0.3rem;
       background: var(--bg-dark);
@@ -37,6 +38,7 @@
       border-color: var(--primary-dark);
     }
   }
+
   code {
     border: 1px solid var(--highlight);
   }

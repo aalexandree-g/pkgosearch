@@ -5,10 +5,9 @@
 @use '../styles/utilities/button';
 
 // components
+@use '../components/dropdown/dropdown';
 @use '../components/footer/footer';
 @use '../components/header/header';
-@use '../components/rules/rule/rule';
-@use '../components/rules/rulesAccordion';
 @use '../components/search/searchInput';
 @use '../components/result/resultBox';
 
@@ -17,7 +16,7 @@
 
 :root {
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: 1rem;
+  font-size: 100%;
 }
 
 body {

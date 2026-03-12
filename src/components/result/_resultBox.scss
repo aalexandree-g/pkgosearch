@@ -41,7 +41,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.8rem;
+    font-size: var(--font-size-xs);
     color: var(--text-muted);
   }
 

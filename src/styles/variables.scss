@@ -26,6 +26,12 @@
   --logo-center: oklch(1 0 0);
   --logo-bottom: var(--highlight);
   --logo-stroke: var(--text);
+
+  --font-size-xs: 0.823rem;
+  --font-size-sm: 0.878rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.138rem;
+  --font-size-xl: 1.383rem;
 }
 
 .dark {
