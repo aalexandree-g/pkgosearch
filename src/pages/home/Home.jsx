@@ -17,20 +17,7 @@ const Home = () => {
       <div className="app">
         <Header />
         <form className="home" onSubmit={homeLogic.handleSubmit}>
-          <Dropdown title="Update - March 11th, 2026" small>
-            <li>
-              rebranded to pkgosearch (
-              <a
-                href="https://pkgosearch.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                pkgosearch.com
-              </a>
-              )
-            </li>
-          </Dropdown>
-          <Dropdown title={<strong>What is pkgosearch ?</strong>}>
+          <Dropdown title={<strong>What is pkgosearch?</strong>}>
             Pokémon GO's search bar is powerful but writing complex filters can
             quickly become a headache.
             <br />
@@ -45,7 +32,7 @@ const Home = () => {
             <br />
             <TextBlock title="No more duplicate conditions">
               Beyond conversion, it also{' '}
-              <strong>cleans up your expressions</strong> automatically :
+              <strong>cleans up your expressions</strong> automatically:
               duplicate conditions, redundant terms, and unnecessary complexity
               are removed, so your final search string is always as short and
               efficient as possible.
@@ -53,7 +40,7 @@ const Home = () => {
             <br />
             <TextBlock title="Example">
               Want all your <strong>shiny Pikachu</strong> and all your{' '}
-              <strong>XXL Pumpkaboo</strong> ? Just type
+              <strong>XXL Pumpkaboo</strong>? Just type
               <br />
               <code>(pikachu&shiny),(pumpkaboo&xxl)</code>
               <br />

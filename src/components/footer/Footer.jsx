@@ -2,7 +2,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer__content">
-        Feedback, ideas, or a kind word ?{' '}
+        Feedback, ideas, or a kind word?{' '}
         <a className="footer__link" href="mailto:ashitaway@gmail.com">
           Say hi
         </a>

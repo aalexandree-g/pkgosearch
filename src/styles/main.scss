@@ -23,6 +23,8 @@ body {
   background: var(--bg-dark);
   margin: 0;
   min-width: 320px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 #root {

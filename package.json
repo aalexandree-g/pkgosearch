@@ -5,7 +5,7 @@
   "description": "Build and simplify Pokémon GO search expressions",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
