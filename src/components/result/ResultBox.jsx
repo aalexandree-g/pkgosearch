@@ -15,6 +15,16 @@ const ResultBox = ({ show, hasSubmitted, result, error }) => {
 
   return (
     <div className="result-box">
+      {!isError && result && (
+        <button
+          type="button"
+          className="u-surface btn btn--submit"
+          onClick={handleCopy}
+        >
+          Copy to clipboard
+        </button>
+      )}
+
       <div
         className={[
           'u-surface',
@@ -45,16 +55,6 @@ const ResultBox = ({ show, hasSubmitted, result, error }) => {
           </span>
         )}
       </div>
-
-      {!isError && result && (
-        <button
-          type="button"
-          className="u-surface btn btn--submit"
-          onClick={handleCopy}
-        >
-          Copy to clipboard
-        </button>
-      )}
     </div>
   )
 }
