@@ -14,6 +14,7 @@ pkgosearch addresses this limitation by providing :
 - an auto-resizing input field to ensure **the full expression remains visible** while typing
 - a structured JavaScript parsing engine (tree-based logic) to analyze expression logic
 - automatic normalization and **transformation of the input expression**
+- simplification of repeated conditions before expansion to support more complex expressions
 - translation into an equivalent **Pokémon GO–compatible query** (without parentheses)
 
 ## Project Goals
