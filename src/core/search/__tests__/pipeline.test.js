@@ -1,6 +1,6 @@
 import { transform } from '../index'
 
-describe('pipeline (tokenize → parse → simplify → normalize → simplify → serialize)', () => {
+describe('transform search conversion', () => {
   // ---------- VALID CASES ----------
 
   test('converts a simple TERM', () => {
@@ -55,42 +55,37 @@ describe('pipeline (tokenize → parse → simplify → normalize → simplify �
     expect(transform('!(a,b)')).toBe('!a&!b')
   })
 
-  // ---------- FORBIDDEN NEGATED IV FILTERS ----------
+  // ---------- POSITIVE IV COMPLEMENTS ----------
 
-  test('throws on forbidden negated IV (!4hp)', () => {
-    expect(() => transform('!4hp')).toThrow('Forbidden filter: "!4hp".')
-  })
-
-  test('throws on forbidden negated IV range (!0-3attack)', () => {
-    expect(() => transform('!0-3attack')).toThrow(
-      'Forbidden filter: "!0-3attack".'
-    )
-  })
-
-  test('throws on forbidden negated IV with french alias (!2defense)', () => {
-    expect(() => transform('!2defense')).toThrow(
-      'Forbidden filter: "!2defense".'
-    )
+  test.each([
+    ['!1attack', '0attack,2-attack'],
+    ['!0attack', '1-attack'],
+    ['!4hp', '-3hp'],
+    ['!1-3attack', '0attack,4attack'],
+    ['!-1attack', '2-attack'],
+    ['!2defense', '-1defense,3-defense'],
+    ['!(1-attack&shiny)', '0attack,!shiny'],
+  ])('converts %s to %s', (input, output) => {
+    expect(transform(input)).toBe(output)
   })
 
   test('allows negated non-IV filter (!hp100)', () => {
     expect(transform('!hp100')).toBe('!hp100')
   })
 
-  test('detects forbidden negated IV deep in tree', () => {
-    expect(() => transform('a,!(b&0attack)')).toThrow(
-      'Forbidden filter: "!0attack".'
-    )
+  test('keeps unsupported French IV aliases on the existing error path', () => {
+    expect(() => transform('!1-attaque')).toThrow('Forbidden filter')
   })
 
-  test('still rejects a forbidden filter shared by factored branches', () => {
-    expect(() => transform('(!4attack&x),(!4attack&y)')).toThrow(
-      'Forbidden filter: "!4attack".'
-    )
+  test('reports an impossible IV complement', () => {
+    expect(transform('!0-attack,shiny')).toBe('shiny')
+    expect(() => transform('!0-attack&shiny')).toThrow('Impossible expression')
   })
 
-  test('preserves existing absorption before forbidden filter validation', () => {
-    expect(transform('a,(a&!4attack)')).toBe('a')
+  test('validates unsupported filters before absorption can hide them', () => {
+    expect(() => transform('a,(a&!mega1)')).toThrow(
+      'Forbidden filter: "!mega1".'
+    )
   })
 
   // ---------- INVALID SYNTAX ----------
