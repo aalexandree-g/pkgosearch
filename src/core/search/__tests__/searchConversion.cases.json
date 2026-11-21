@@ -1,0 +1,561 @@
+[
+  {
+    "id": "lucky-traded-two-alternatives",
+    "input": "(lucky&!traded),(traded&shiny)",
+    "members": [
+      {
+        "name": "shiny lucky traded",
+        "trueTerms": ["lucky", "traded", "shiny"],
+        "matches": true
+      },
+      { "name": "non-shiny traded", "trueTerms": ["traded"], "matches": false }
+    ]
+  },
+  {
+    "id": "lucky-traded-with-favourite-ditto",
+    "input": "(lucky&!traded),(traded&shiny),(ditto&favorite)",
+    "members": [
+      {
+        "name": "shiny lucky non-favourited Ditto",
+        "trueTerms": ["lucky", "traded", "shiny", "ditto"],
+        "matches": true
+      },
+      {
+        "name": "non-shiny favourited Ditto",
+        "trueTerms": ["ditto", "favorite"],
+        "matches": true
+      }
+    ]
+  },
+  {
+    "id": "reported-six-alternative-ditto",
+    "input": "(lucky&!traded),(traded&shiny),(ditto&favorite),(bulbasaur&shadow),(charizard&costume),(beedrill&purified)",
+    "maxOutputClauses": 32,
+    "members": [
+      {
+        "name": "reported shiny lucky non-favourited Ditto",
+        "trueTerms": ["lucky", "traded", "shiny", "ditto"],
+        "matches": true
+      },
+      {
+        "name": "non-shiny non-favourited Ditto",
+        "trueTerms": ["ditto"],
+        "matches": false
+      },
+      {
+        "name": "purified Beedrill",
+        "trueTerms": ["beedrill", "purified"],
+        "matches": true
+      }
+    ]
+  },
+  {
+    "id": "all-requirements-remain-required",
+    "input": "(132&lucky&favorite),(1&shadow),(6&costume),(15&purified),(7&favorite),(133&lucky)",
+    "maxOutputClauses": 32,
+    "members": [
+      {
+        "name": "Lucky but not favourited Ditto",
+        "trueTerms": ["132", "lucky"],
+        "matches": false
+      },
+      {
+        "name": "favourited but not Lucky Ditto",
+        "trueTerms": ["132", "favorite"],
+        "matches": false
+      },
+      {
+        "name": "Lucky favourited Ditto",
+        "trueTerms": ["132", "lucky", "favorite"],
+        "matches": true
+      }
+    ]
+  },
+  {
+    "id": "standalone-shiny-shields-every-restriction",
+    "input": "shiny,(132&favorite),(1&shadow),(6&costume),(15&purified),(7&favorite),(133&lucky)",
+    "maxOutputClauses": 32,
+    "members": [
+      {
+        "name": "shiny non-favourited Ditto",
+        "trueTerms": ["132", "shiny"],
+        "matches": true
+      },
+      {
+        "name": "non-shiny favourited Ditto",
+        "trueTerms": ["132", "favorite"],
+        "matches": true
+      },
+      {
+        "name": "non-shiny non-favourited Ditto",
+        "trueTerms": ["132"],
+        "matches": false
+      }
+    ]
+  },
+  {
+    "id": "six-separate-dex-selectors",
+    "input": "(132&shiny),(1&shadow),(6&costume),(15&purified),(7&favorite),(133&lucky)",
+    "maxOutputClauses": 32,
+    "members": [
+      { "name": "shiny Ditto", "trueTerms": ["132", "shiny"], "matches": true },
+      { "name": "non-shiny Ditto", "trueTerms": ["132"], "matches": false },
+      {
+        "name": "purified Beedrill",
+        "trueTerms": ["15", "purified"],
+        "matches": true
+      }
+    ]
+  },
+  {
+    "id": "repeated-dex-selectors-retain-alternatives",
+    "input": "(132&shiny),(132&favorite),(1&shadow),(6&costume),(15&purified),(7&favorite),(133&lucky)",
+    "maxOutputClauses": 32,
+    "members": [
+      {
+        "name": "shiny non-favourited Ditto",
+        "trueTerms": ["132", "shiny"],
+        "matches": true
+      },
+      {
+        "name": "non-shiny favourited Ditto",
+        "trueTerms": ["132", "favorite"],
+        "matches": true
+      },
+      {
+        "name": "non-shiny non-favourited Ditto",
+        "trueTerms": ["132"],
+        "matches": false
+      }
+    ]
+  },
+  {
+    "id": "shared-opaque-condition-needs-no-domain-proof",
+    "input": "(a&b),(a&c),(a&d),(a&e),(a&f),(a&g)",
+    "maxOutputClauses": 32,
+    "members": [
+      {
+        "name": "one complete alternative",
+        "trueTerms": ["a", "b"],
+        "matches": true
+      },
+      { "name": "only shared condition", "trueTerms": ["a"], "matches": false }
+    ]
+  },
+  {
+    "id": "nonoverlapping-dex-ranges-can-separate-alternatives",
+    "input": "(1-10&a),(11-20&b),(21-30&c),(31-40&d),(41-50&e),(51-60&f)",
+    "maxOutputClauses": 32,
+    "members": [
+      {
+        "name": "second range with its requirement",
+        "trueTerms": ["11-20", "b"],
+        "matches": true
+      },
+      {
+        "name": "second range with another range's requirement",
+        "trueTerms": ["11-20", "a"],
+        "matches": false
+      },
+      {
+        "name": "outside the selected ranges",
+        "trueTerms": ["a", "b", "c", "d", "e", "f"],
+        "matches": false
+      }
+    ]
+  },
+  {
+    "id": "star-buckets-preserve-every-remainder-requirement",
+    "input": "(0*&a&b&c&d),(1*&e&f&g&h),(2*&i&j&k&l)",
+    "maxOutputClauses": 32,
+    "members": [
+      {
+        "name": "zero stars with all requirements",
+        "trueTerms": ["0*", "a", "b", "c", "d"],
+        "matches": true
+      },
+      {
+        "name": "one star missing one requirement",
+        "trueTerms": ["1*", "e", "f", "g"],
+        "matches": false
+      },
+      {
+        "name": "unselected star bucket",
+        "trueTerms": ["a", "b", "c", "d"],
+        "matches": false
+      }
+    ]
+  },
+  {
+    "id": "positive-iv-complements-with-multiple-requirements",
+    "input": "(0attack&a&b),(1attack&c&d),(2attack&e&f),(3attack&g&h),(4attack&i&j)",
+    "maxOutputClauses": 32,
+    "outputTerms": [
+      "1-attack",
+      "2-attack",
+      "-1attack",
+      "3-attack",
+      "-2attack",
+      "-3attack"
+    ],
+    "members": [
+      {
+        "name": "tier zero with both requirements",
+        "trueTerms": ["0attack", "-1attack", "-2attack", "-3attack", "a", "b"],
+        "matches": true
+      },
+      {
+        "name": "tier zero missing one requirement",
+        "trueTerms": ["0attack", "-1attack", "-2attack", "-3attack", "a"],
+        "matches": false
+      },
+      {
+        "name": "tier four with both requirements",
+        "trueTerms": ["4attack", "1-attack", "2-attack", "3-attack", "i", "j"],
+        "matches": true
+      },
+      {
+        "name": "tier one with the wrong requirements",
+        "trueTerms": [
+          "1attack",
+          "1-attack",
+          "-1attack",
+          "-2attack",
+          "-3attack",
+          "a",
+          "b"
+        ],
+        "matches": false
+      }
+    ]
+  },
+  {
+    "id": "select-fast-move-type-instead-of-overlapping-type-negation",
+    "input": "(!normal&@1normal),(!fire&@1fire),(!water&@1water),(!grass&@1grass),(!electric&@1electric),(!ice&@1ice)",
+    "maxOutputClauses": 32,
+    "members": [
+      {
+        "name": "Electric with Water fast move",
+        "trueTerms": ["electric", "@1water"],
+        "matches": true
+      },
+      {
+        "name": "Normal with Normal fast move",
+        "trueTerms": ["normal", "@1normal"],
+        "matches": false
+      },
+      {
+        "name": "Normal Fire with Normal fast move",
+        "trueTerms": ["normal", "fire", "@1normal"],
+        "matches": false
+      }
+    ]
+  },
+  {
+    "id": "fast-move-selector-position-does-not-change-membership",
+    "input": "(@1normal&!normal),(@1fire&!fire),(@1water&!water),(@1grass&!grass),(@1electric&!electric),(@1ice&!ice)",
+    "maxOutputClauses": 32,
+    "members": [
+      {
+        "name": "Electric with Water fast move",
+        "trueTerms": ["electric", "@1water"],
+        "matches": true
+      },
+      {
+        "name": "Normal with Normal fast move",
+        "trueTerms": ["normal", "@1normal"],
+        "matches": false
+      }
+    ]
+  },
+  {
+    "id": "ordinary-exact-conversion-at-32",
+    "input": "(a&b),(c&d),(e&f),(g&h),(i&j)",
+    "maxOutputClauses": 32,
+    "members": [
+      { "name": "first alternative", "trueTerms": ["a", "b"], "matches": true },
+      {
+        "name": "incomplete alternatives",
+        "trueTerms": ["a", "c", "e", "g", "i"],
+        "matches": false
+      }
+    ]
+  },
+  {
+    "id": "grouped-negation-is-prepared-before-expansion",
+    "input": "!((a&b),(c&d),(e&f),(g&h),(i&j),(k&l))",
+    "maxOutputClauses": 32,
+    "members": [
+      {
+        "name": "one positive alternative",
+        "trueTerms": ["a", "b"],
+        "matches": false
+      },
+      { "name": "no positive alternatives", "trueTerms": [], "matches": true }
+    ]
+  },
+  {
+    "id": "all-impossible-alternatives-report-a-conflict",
+    "input": "(lucky&!traded),(lucky&!traded&shiny)",
+    "error": "Impossible expression"
+  },
+  {
+    "id": "tautology-still-has-nonempty-output",
+    "input": "shiny,!shiny",
+    "members": [
+      { "name": "Shiny", "trueTerms": ["shiny"], "matches": true },
+      { "name": "not Shiny", "trueTerms": [], "matches": true }
+    ]
+  },
+  {
+    "id": "unknown-separators-do-not-justify-a-rewrite",
+    "input": "(a&b),(c&d),(e&f),(g&h),(i&j),(k&l)",
+    "pipelineError": "MaxCNFExpansionError",
+    "maxOutputClauses": 64,
+    "members": [
+      {
+        "name": "complete first alternative",
+        "trueTerms": ["a", "b"],
+        "matches": true
+      },
+      { "name": "gate alone", "trueTerms": ["a"], "matches": false },
+      {
+        "name": "overlap with another complete alternative",
+        "trueTerms": ["a", "c", "d"],
+        "matches": true
+      }
+    ]
+  },
+  {
+    "id": "four-three-condition-alternatives-need-exact-expansion",
+    "input": "(a&b&c),(d&e&f),(g&h&i),(j&k&l)",
+    "pipelineError": "MaxCNFExpansionError",
+    "maxOutputClauses": 81,
+    "members": [
+      {
+        "name": "all first requirements",
+        "trueTerms": ["a", "b", "c"],
+        "matches": true
+      },
+      {
+        "name": "missing third requirement",
+        "trueTerms": ["a", "b"],
+        "matches": false
+      },
+      {
+        "name": "one gate overlapping another complete branch",
+        "trueTerms": ["a", "d", "e", "f"],
+        "matches": true
+      }
+    ]
+  },
+  {
+    "id": "bare-species-names-are-not-proven-separate",
+    "input": "(ditto&a),(bulbasaur&b),(charizard&c),(beedrill&d),(squirtle&e),(eevee&f)",
+    "pipelineError": "MaxCNFExpansionError",
+    "maxOutputClauses": 64,
+    "members": [
+      {
+        "name": "one complete name alternative",
+        "trueTerms": ["ditto", "a"],
+        "matches": true
+      },
+      {
+        "name": "overlapping nickname and species match",
+        "trueTerms": ["ditto", "bulbasaur", "a"],
+        "matches": true
+      },
+      {
+        "name": "names without requirements",
+        "trueTerms": ["ditto", "bulbasaur"],
+        "matches": false
+      }
+    ]
+  },
+  {
+    "id": "overlapping-dex-ranges-are-not-separate",
+    "input": "(1-10&a),(5-15&b),(20&c),(30&d),(40&e),(50&f)",
+    "pipelineError": "MaxCNFExpansionError",
+    "maxOutputClauses": 64,
+    "members": [
+      {
+        "name": "overlap satisfying first requirement",
+        "trueTerms": ["1-10", "5-15", "a"],
+        "matches": true
+      },
+      {
+        "name": "overlap satisfying second requirement",
+        "trueTerms": ["1-10", "5-15", "b"],
+        "matches": true
+      },
+      {
+        "name": "overlap without either requirement",
+        "trueTerms": ["1-10", "5-15"],
+        "matches": false
+      }
+    ]
+  },
+  {
+    "id": "different-flags-can-overlap",
+    "input": "(shiny&a),(lucky&b),(favorite&c),(costume&d),(purified&e),(shadow&f)",
+    "pipelineError": "MaxCNFExpansionError",
+    "maxOutputClauses": 64,
+    "members": [
+      {
+        "name": "overlapping flags satisfying one branch",
+        "trueTerms": ["shiny", "lucky", "a"],
+        "matches": true
+      },
+      {
+        "name": "overlapping flags without requirements",
+        "trueTerms": ["shiny", "lucky"],
+        "matches": false
+      },
+      {
+        "name": "complete Shadow alternative",
+        "trueTerms": ["shadow", "f"],
+        "matches": true
+      }
+    ]
+  },
+  {
+    "id": "different-move-slots-are-not-one-partition",
+    "input": "(@1normal&a),(@2fire&b),(@1water&c),(@1grass&d),(@1electric&e),(@1ice&f)",
+    "pipelineError": "MaxCNFExpansionError",
+    "maxOutputClauses": 64,
+    "members": [
+      {
+        "name": "both move slots with first requirement",
+        "trueTerms": ["@1normal", "@2fire", "a"],
+        "matches": true
+      },
+      {
+        "name": "both move slots with second requirement",
+        "trueTerms": ["@1normal", "@2fire", "b"],
+        "matches": true
+      },
+      {
+        "name": "both move slots without requirements",
+        "trueTerms": ["@1normal", "@2fire"],
+        "matches": false
+      }
+    ]
+  },
+  {
+    "id": "exact-iv-negation-uses-positive-ranges",
+    "input": "!1attack",
+    "output": "0attack,2-attack",
+    "outputTerms": ["0attack", "2-attack"],
+    "members": [
+      { "name": "tier zero", "trueTerms": ["0attack"], "matches": true },
+      { "name": "tier one", "trueTerms": ["1attack"], "matches": false },
+      { "name": "tier two", "trueTerms": ["2-attack"], "matches": true },
+      { "name": "tier four", "trueTerms": ["2-attack"], "matches": true }
+    ]
+  },
+  {
+    "id": "closed-iv-range-negation",
+    "input": "!1-3attack",
+    "output": "0attack,4attack",
+    "outputTerms": ["0attack", "4attack"],
+    "members": [
+      { "name": "tier zero", "trueTerms": ["0attack"], "matches": true },
+      { "name": "tier two", "trueTerms": ["1-3attack"], "matches": false },
+      { "name": "tier four", "trueTerms": ["4attack"], "matches": true }
+    ]
+  },
+  {
+    "id": "open-upper-iv-range-negation",
+    "input": "!1-attack",
+    "output": "0attack",
+    "outputTerms": ["0attack"],
+    "members": [
+      { "name": "tier zero", "trueTerms": ["0attack"], "matches": true },
+      { "name": "tier one", "trueTerms": ["1-attack"], "matches": false }
+    ]
+  },
+  {
+    "id": "open-lower-iv-range-negation",
+    "input": "!-1attack",
+    "output": "2-attack",
+    "outputTerms": ["2-attack"],
+    "members": [
+      { "name": "tier one", "trueTerms": ["-1attack"], "matches": false },
+      { "name": "tier two", "trueTerms": ["2-attack"], "matches": true }
+    ]
+  },
+  {
+    "id": "defense-tier-negation",
+    "input": "!1-defense",
+    "output": "0defense",
+    "outputTerms": ["0defense"],
+    "members": [
+      { "name": "tier zero", "trueTerms": ["0defense"], "matches": true },
+      { "name": "tier one", "trueTerms": ["1-defense"], "matches": false },
+      { "name": "tier two", "trueTerms": ["1-defense"], "matches": false }
+    ]
+  },
+  {
+    "id": "hp-range-negation",
+    "input": "!-2hp",
+    "output": "3-hp",
+    "outputTerms": ["3-hp"],
+    "members": [
+      { "name": "tier two", "trueTerms": ["-2hp"], "matches": false },
+      { "name": "tier three", "trueTerms": ["3-hp"], "matches": true }
+    ]
+  },
+  {
+    "id": "zero-attack-negation",
+    "input": "!0attack",
+    "output": "1-attack",
+    "outputTerms": ["1-attack"],
+    "members": [
+      { "name": "tier zero", "trueTerms": ["0attack"], "matches": false },
+      { "name": "tier one", "trueTerms": ["1-attack"], "matches": true }
+    ]
+  },
+  {
+    "id": "perfect-hp-tier-negation",
+    "input": "!4hp",
+    "output": "-3hp",
+    "outputTerms": ["-3hp"],
+    "members": [
+      { "name": "tier three", "trueTerms": ["-3hp"], "matches": true },
+      { "name": "tier four", "trueTerms": ["4hp"], "matches": false }
+    ]
+  },
+  {
+    "id": "forbidden-mega-negation",
+    "input": "!mega1",
+    "error": "Forbidden filter"
+  },
+  {
+    "id": "forbidden-open-mega-negation",
+    "input": "!mega1-",
+    "error": "Forbidden filter"
+  },
+  {
+    "id": "forbidden-closed-mega-negation",
+    "input": "!mega0-4",
+    "error": "Forbidden filter"
+  },
+  {
+    "id": "grouped-not-exposes-unsupported-mega",
+    "input": "!(shiny,mega1)",
+    "error": "Forbidden filter"
+  },
+  {
+    "id": "do-not-distribute-sticky-region-negation",
+    "input": "(132&!alola),(133&shiny)",
+    "error": "Unsupported filter"
+  },
+  {
+    "id": "double-negation-restores-positive-iv",
+    "input": "!!1attack",
+    "members": [
+      { "name": "tier one", "trueTerms": ["1attack"], "matches": true },
+      { "name": "another tier", "trueTerms": [], "matches": false }
+    ]
+  }
+]
