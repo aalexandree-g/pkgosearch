@@ -1,9 +1,13 @@
-import { toCNF, normalize } from '../normalize'
+import { toCNF, normalize, prepareForCNF } from '../normalize'
+import { transform } from '../index'
+import { parseAndWithOrPriority } from '../parse'
+import { tokenize } from '../tokenize'
 
 const T = (value) => ({ type: 'TERM', value })
 const N = (value) => ({ type: 'NOT', child: T(value) })
 const AND = (left, right) => ({ type: 'AND', left, right })
 const OR = (left, right) => ({ type: 'OR', left, right })
+const parse = (input) => parseAndWithOrPriority(tokenize(input))
 
 // ---------------------------------------------------------------------------
 
@@ -46,7 +50,52 @@ describe('toCNF', () => {
 
 // ---------------------------------------------------------------------------
 
-describe('normalize (NNF → IV validation → CNF)', () => {
+describe('prepareForCNF', () => {
+  test('prepares negations without distributing alternatives', () => {
+    const ast = OR(AND(T('a'), T('b')), AND(T('c'), T('d')))
+    expect(prepareForCNF(ast)).toEqual(ast)
+  })
+
+  test('eliminates double negation before checking Mega filters', () => {
+    expect(prepareForCNF(parse('!!mega1'))).toEqual(T('mega1'))
+  })
+
+  test.each(['!mega', '!mega-1', '!(mega1,shiny)'])(
+    'rejects unsupported negation through both entry points: %s',
+    (input) => {
+      expect(() => normalize(parse(input))).toThrow('Forbidden filter')
+      expect(() => transform(input)).toThrow('Forbidden filter')
+    }
+  )
+
+  test('converts an IV complement inside a grouped negation', () => {
+    expect(transform('!(1-attack&shiny)')).toBe('0attack,!shiny')
+  })
+
+  test.each([
+    '!alola',
+    '132&!alola',
+    '!alola,132',
+    '!!(132&!alola)',
+    '!alola&((a&b),(c&d))',
+    '!alolanickname',
+  ])('retains native or unaffected region exclusions: %s', (input) => {
+    expect(() => prepareForCNF(parse(input))).not.toThrow()
+    expect(transform(input)).toContain('!alola')
+  })
+
+  test.each(['(!alola&shiny),132', '!(alola&shiny)', '!(galar,shiny)'])(
+    'rejects regrouping unreliable region exclusions: %s',
+    (input) => {
+      expect(() => normalize(parse(input))).toThrow('Unsupported filter')
+      expect(() => transform(input)).toThrow('Unsupported filter')
+    }
+  )
+})
+
+// ---------------------------------------------------------------------------
+
+describe('normalize (NNF → filter validation → CNF)', () => {
   // ---------- NNF ----------
 
   test('returns TERM unchanged', () => {
@@ -100,25 +149,21 @@ describe('normalize (NNF → IV validation → CNF)', () => {
     expect(normalize(ast)).toEqual(OR(T('a'), T('a')))
   })
 
-  // ---------- Forbidden negated IV filters ----------
+  // ---------- Positive IV complements ----------
 
-  test('throws on !4hp', () => {
-    expect(() => normalize(N('4hp'))).toThrow('Forbidden filter: "!4hp".')
+  test.each([
+    ['!1attack', OR(T('0attack'), T('2-attack'))],
+    ['!0attack', T('1-attack')],
+    ['!4hp', T('-3hp')],
+    ['!1-3attack', OR(T('0attack'), T('4attack'))],
+    ['!-1attack', T('2-attack')],
+    ['!1-defense', T('0defense')],
+    ['!-2hp', T('3-hp')],
+  ])('converts %s to positive IV terms', (input, expected) => {
+    expect(normalize(parse(input))).toEqual(expected)
   })
 
-  test('throws on !0-3attack (IV range)', () => {
-    expect(() => normalize(N('0-3attack'))).toThrow(
-      'Forbidden filter: "!0-3attack".'
-    )
-  })
-
-  test('throws on !2defense', () => {
-    expect(() => normalize(N('2defense'))).toThrow(
-      'Forbidden filter: "!2defense".'
-    )
-  })
-
-  test('throws on !1pv (french alias)', () => {
+  test('keeps the existing boundary for French IV aliases', () => {
     expect(() => normalize(N('1pv'))).toThrow('Forbidden filter: "!1pv".')
   })
 
@@ -126,15 +171,23 @@ describe('normalize (NNF → IV validation → CNF)', () => {
     expect(normalize(N('hp100'))).toEqual(N('hp100'))
   })
 
-  test('detects forbidden IV term deep in tree', () => {
-    expect(() => normalize(AND(T('pikachu'), N('0attack')))).toThrow(
-      'Forbidden filter: "!0attack".'
+  test('converts IV negation exposed by De Morgan', () => {
+    const ast = { type: 'NOT', child: AND(T('pikachu'), T('1attack')) }
+    expect(normalize(ast)).toEqual(
+      OR(N('pikachu'), OR(T('0attack'), T('2-attack')))
     )
   })
 
-  test('detects forbidden IV term revealed by De Morgan: !(pikachu & 1attack)', () => {
-    // NNF turns !(pikachu & 1attack) into !pikachu | !1attack — then !1attack is caught
-    const ast = { type: 'NOT', child: AND(T('pikachu'), T('1attack')) }
-    expect(() => normalize(ast)).toThrow('Forbidden filter: "!1attack".')
+  test('removes an empty IV complement from an OR and rejects an impossible AND', () => {
+    expect(normalize(parse('!0-attack,shiny'))).toEqual(T('shiny'))
+    expect(() => normalize(parse('!0-attack&shiny'))).toThrow(
+      'Impossible expression'
+    )
+  })
+
+  test('validates unsupported filters before removing an impossible IV branch', () => {
+    expect(() => normalize(parse('!0-attack&!mega1'))).toThrow(
+      'Forbidden filter: "!mega1".'
+    )
   })
 })
