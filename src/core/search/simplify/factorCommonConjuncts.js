@@ -1,9 +1,9 @@
 import { canonicalKey, combineLeft, flattenByType } from '../astUtils'
 
 /**
- * Factors structurally equivalent conjuncts from OR branches.
+ * Pulls shared conditions out of OR alternatives.
  * Example: (a&b),(a&c),(d&e) -> (a&(b,c)),(d&e).
- * Shared factors are matched with commutativity-aware canonical keys.
+ * canonicalKey matches conditions even when their terms appear in another order.
  */
 export function factorCommonConjuncts(node) {
   // Nodes are not mutated, so their cached keys remain valid for this call.
@@ -17,14 +17,14 @@ export function factorCommonConjuncts(node) {
   }
 
   /**
-   * Finds the factor shared by the most eligible branches.
-   * Ties keep the first factor encountered in branch order.
+   * Finds a condition shared by at least two alternatives.
+   * Chooses the one used most often; ties keep input order.
    */
   function findSharedFactor(branches) {
     const factorsByKey = new Map()
 
     branches.forEach((branch, branchIndex) => {
-      // In simplify(), bare-factor absorption runs before this pass.
+      // simplify() already handles cases such as a,(a&b) -> a.
       if (branch.type !== 'AND') return
 
       const conjuncts = flattenByType(branch, 'AND')
@@ -36,7 +36,7 @@ export function factorCommonConjuncts(node) {
       })
 
       conjunctsByKey.forEach((matchingConjuncts, key) => {
-        // A branch must retain at least one conjunct after factoring.
+        // Removing the shared condition must leave something in this alternative.
         if (matchingConjuncts.length === conjuncts.length) return
         if (!factorsByKey.has(key)) {
           factorsByKey.set(key, {
@@ -64,8 +64,8 @@ export function factorCommonConjuncts(node) {
   }
 
   /**
-   * Replaces the participating branches once. Keeps unrelated branches in order.
-   * Any new group will replace the first participating branch in the OR chain.
+   * Combines alternatives that share the chosen condition.
+   * Puts the result at their first position and leaves other alternatives in order.
    */
   function applySharedFactor(branches, selectedFactor) {
     const participantIndices = new Set(selectedFactor.branchIndices)
@@ -79,7 +79,7 @@ export function factorCommonConjuncts(node) {
         return flattenByType(combineLeft(remainingConjuncts, 'AND'), 'OR')
       }
     )
-    // Remaining alternatives may themselves share a factor, so we recursively factor them.
+    // The remaining alternatives may have another condition in common.
     const factoredAlternatives = factorBranches(remainingAlternatives)
     const factoredBranch = {
       type: 'AND',
@@ -95,12 +95,13 @@ export function factorCommonConjuncts(node) {
   }
 
   /**
-   * Factors shared conjuncts among AND branches in an OR chain.
-   * Repeats until no eligible shared factor remains; other branches are retained.
+   * Repeatedly pulls out shared conditions until there are none left to combine.
+   * Keeps alternatives that do not share the chosen condition.
    */
   function factorBranches(initialBranches) {
     let branches = initialBranches
 
+    // Each step removes repeated conditions, so the tree gets smaller.
     while (true) {
       if (branches.filter((branch) => branch.type === 'AND').length < 2) {
         return branches
@@ -115,16 +116,12 @@ export function factorCommonConjuncts(node) {
   function visitNode(currentNode) {
     if (!currentNode || currentNode.type === 'TERM') return currentNode
     if (currentNode.type === 'NOT') {
-      // Examine the negated expression while keeping the node's NOT operator as-is.
-      // Unless a child change occurs, the current node remains unchanged.
       const child = visitNode(currentNode.child)
       return child === currentNode.child
         ? currentNode
         : { ...currentNode, child }
     }
     if (currentNode.type === 'AND') {
-      // Examine both operands while keeping the node's AND operator as-is.
-      // Unless a child change occurs, the current node remains unchanged.
       const left = visitNode(currentNode.left)
       const right = visitNode(currentNode.right)
       return left === currentNode.left && right === currentNode.right
@@ -132,7 +129,7 @@ export function factorCommonConjuncts(node) {
         : { ...currentNode, left, right }
     }
     if (currentNode.type === 'OR') {
-      // Flatten this OR chain, then process its branches before factoring the chain.
+      // Look at all OR alternatives together, not just the left or right subtree.
       const originalBranches = flattenByType(currentNode, 'OR')
       const processedBranches = originalBranches.map(visitNode)
       const factoredBranches = factorBranches(processedBranches)
